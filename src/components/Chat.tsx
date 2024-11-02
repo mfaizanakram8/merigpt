@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useEffect, useRef, useState } from "react";
 import { FiSend } from "react-icons/fi";
 import { BsChevronDown, BsPlusLg } from "react-icons/bs";
@@ -47,9 +47,7 @@ const Chat = (props: ChatProps) => {
     }
   }, [conversation]);
 
-  const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const sendMessage = async () => {
     // Don't send empty messages
     if (message.length < 1) {
       setErrorMessage("Please enter a message.");
@@ -108,11 +106,16 @@ const Chat = (props: ChatProps) => {
   };
 
   const handleKeypress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // It's triggers by pressing the enter key
+    // It's triggered by pressing the enter key
     if (e.key === "Enter" && !e.shiftKey) {
-      sendMessage(e as unknown as React.FormEvent<HTMLFormElement>);
+      sendMessage();
       e.preventDefault();
     }
+  };
+
+  const handleSendButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    sendMessage();
   };
 
   return (
@@ -194,35 +197,45 @@ const Chat = (props: ChatProps) => {
           </div>
         </div>
         <div className="absolute bottom-0 left-0 w-full border-t md:border-t-0 dark:border-white/20 md:border-transparent md:dark:border-transparent md:bg-vert-light-gradient bg-white dark:bg-gray-800 md:!bg-transparent dark:md:bg-vert-dark-gradient pt-2">
-          <form className="stretch mx-2 flex flex-row gap-3 last:mb-2 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl" onSubmit={sendMessage}>
-            <div className="relative flex flex-col h-full flex-1 items-stretch md:flex-col">
-              <textarea
-                ref={textAreaRef}
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onKeyPress={handleKeypress}
-                rows={1}
-                placeholder="Type your message here..."
-                className="block w-full resize-none overflow-hidden rounded-md border-0 border-gray-300 bg-gray-200 dark:bg-gray-900 dark:border-gray-600 dark:text-white focus:border-0 focus:ring-0 focus:ring-gray-400"
-                disabled={isLoading}
-              />
-              {errorMessage && (
-                <div className="text-red-500 text-xs">{errorMessage}</div>
+          <form
+            className="stretch mx-2 flex flex-row gap-3 last:mb-2 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl"
+            onSubmit={(e) => {
+              e.preventDefault();
+              sendMessage();
+            }}
+          >
+            <textarea
+              ref={textAreaRef}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyPress={handleKeypress}
+              className="flex-grow resize-none rounded-md border border-black/10 bg-white px-4 py-3 text-gray-900 dark:bg-gray-800 dark:text-gray-200"
+              rows={1}
+              placeholder="Type your message here..."
+            />
+            <button
+              type="button"
+              className={`flex items-center justify-center rounded-md border border-black/10 bg-blue-600 p-2 text-white transition duration-300 ease-in-out hover:bg-blue-700 ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              onClick={handleSendButtonClick}
+              disabled={isLoading}
+              aria-label="Send message"
+            >
+              {isLoading ? (
+                <span>Loading...</span>
+              ) : (
+                <FiSend className="h-5 w-5" />
               )}
-              <button
-                type="submit"
-                aria-label="Add new conversation"
-                disabled={isLoading}
-                className={`flex items-center justify-center rounded-md bg-green-600 p-2 text-white transition-all duration-150 ease-in-out hover:bg-green-700 ${isLoading ? "opacity-50" : ""}`}
-              >
-                <FiSend className="h-4 w-4" />
-              </button>
-            </div>
+            </button>
           </form>
+          {errorMessage && (
+            <div className="p-2 text-red-600">{errorMessage}</div>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default Chat;
+export default Chat; 

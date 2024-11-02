@@ -17,7 +17,6 @@ const Message = (props: Props) => {
   const { role, content: text } = message;
 
   const isUser = role === "user";
- 
   const isSystem = role === "system"; // Determine if the role is "system"
 
   return (
@@ -32,6 +31,8 @@ const Message = (props: Props) => {
             <div className="relative h-7 w-7 p-1 rounded-sm text-white flex items-center justify-center bg-black/75 text-opacity-100r">
               {isUser ? (
                 <HiUser className="h-4 w-4 text-white" />
+              ) : isSystem ? (
+                <SiOpenai className="h-4 w-4 text-white" />
               ) : (
                 <SiOpenai className="h-4 w-4 text-white" />
               )}
