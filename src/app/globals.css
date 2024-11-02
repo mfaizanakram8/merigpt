@@ -19,3 +19,26 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+#__next {
+  height: 100vh;
+}
+
+body {
+  height: 100%;
+}
+
+.react-scroll-to-bottom--css-uzqrz-79elbk {
+  position: relative;
+}
+
+.react-scroll-to-bottom--css-ikyem-1n7m0yu {
+  height: 100%;
+  overflow-y: auto;
+  width: 100%;
+}
+
+textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
